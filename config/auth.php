@@ -42,7 +42,7 @@ return [
 				
 				'api' => [ 
 						'driver' => 'token',
-						'provider' => 'users' 
+						'provider' => 'system' 
 				],
 				
 				'user' => [ 
@@ -84,7 +84,13 @@ return [
 						'driver' => 'eloquent',
 						'model' => App\Admin::class,
 						'table' => 'Admin' 
-				] 
+				],
+    		
+    		    'system' => [
+    		    		'driver' => 'eloquent',
+    		    		'model' => App\Microcontroller::class,
+    		    		'table' => 'Microcontroller'
+    		    ]
 		],
 
     /*

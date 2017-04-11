@@ -13,5 +13,15 @@ use Illuminate\Http\Request;
  */
 
 Route::get ( '/user', function (Request $request) {
-	return $request->user ();
-} )->middleware ( 'auth:api' );
+	echo 'wi';
+} );
+
+Route::post('/refresh/token/{systemId}','MicrocontrollerController@generateControllerToken');
+
+Route::post('/add/sensor/{systemId}','MicrocontrollerController@addSensor')->middleware('token');
+
+Route::post('/log/readings/{systemId}','Moisture_ReadingsController@logInfo')->middleware('token');
+
+Route::post('/log/intrusion/{systemId}','IntrusionController@reportIntrusion')->middleware('token');
+
+Route::post('/forecast/{systemId}','MicrocontrollerController@getRainPrediction')->middleware('token');
