@@ -224,15 +224,28 @@ class MicrocontrollerController extends Controller {
 	}
 	
 	
+	public function checkPumpStatus(Request $request, $systemId){
+		$irrSystem = Microcontroller::with('farmer')->where('id',$systemId)
+													->where('Farmer_id',$request->input('user_id',0))
+													->where('token',$request->input('token'))
+													->first();
+		if(! $irrSystem){
+			return $this->responseObject(['message'=>'System not found or has been deleted'], HttpResp::HTTP_NOT_FOUND);
+		}
+		
+		return $this->responseObject(['message'=>'pump_status','pump_status'=>$irrSystem->pump_status], HttpResp::HTTP_OK);
+	}
 	
-	public function getRainPrediction(Request $request,$systemid){
-		$rules = [
+	
+	public function getRainPrediction(Request $request,$systemId){
+		/*$rules = [
 				'mcc'=>'required',
 				'mnc'=>'required',
 				'radioType'=>'required',
 				'cellId'=>'required',
 				'lac'=>'required',		
-		];
+		];*/
+		$rules = ['ip_addr'=>'required'];
 		$valid = $this->validationPasser($request->all(), $rules);
 		
 		if(! $valid){
@@ -245,35 +258,28 @@ class MicrocontrollerController extends Controller {
 // 					   'mobileCountryCode'=>$request->input('mcc'),
 // 					   'mobileNetworkCode'=>$request->input('mnc')
 // 		];
-		$cellTowers = ['cellId'=>17703,
-				'locationAreaCode'=>10232,
-				'mobileCountryCode'=>620,
-				'mobileNetworkCode'=>06
-		];
-		$data =['homeMobileCountryCode'=>620,
-				'homeMobileNetworkCode'=>06,
-				'radioType'=>'gsm',
-				'considerIp'=>'true',
-				'cellTowers'=>$cellTowers
-		];
+// 		$cellTowers = ['cellId'=>17703,
+// 				'locationAreaCode'=>10232,
+// 				'mobileCountryCode'=>620,
+// 				'mobileNetworkCode'=>06
+// 		];
+// 		$data =['homeMobileCountryCode'=>620,
+// 				'homeMobileNetworkCode'=>06,
+// 				'radioType'=>'gsm',
+// 				'considerIp'=>'true',
+// 				'cellTowers'=>$cellTowers
+// 		];
 		
 		
-		$coords = $this->getCoordinates($data);
+		$coords = $this->getCoordinatesByIp($request->input('ip_addr'));
 		if(! $coords){
-	
-			return $this->responseObject(['message'=>'external request failed','reason'=>'google'], HttpResp::HTTP_INTERNAL_SERVER_ERROR); 
-				
+			return $this->responseObject(['message'=>'external request failed','reason'=>'freegeoip'], 
+											HttpResp::HTTP_INTERNAL_SERVER_ERROR); 	
 		}
 		
 		
-// 		var_dump($coords);
-		$dec_coords = json_decode($coords,true);
-		if(isset($dec_coords['error'])){
-			return $this->responseObject(['message'=>'external request failed','reason'=>$dec_coords['error']], HttpResp::HTTP_INTERNAL_SERVER_ERROR);	
-		}
-		//var_dump($dec_coords);
-		$lon = $dec_coords['location']['lng'];
-		$lat = $dec_coords['location']['lat'];
+		$lon = $coords['longitude'];
+		$lat = $coords['latitude'];
 		
 		$result = $this->contactWeatherAPI($lon, $lat);
 		if (! $result) {
@@ -289,12 +295,14 @@ class MicrocontrollerController extends Controller {
 									  'forecast'=>$forecast,'location'=>$location], HttpResp::HTTP_OK);
 	}
 	
+	
+	
 	/**
 	 * 
 	 * @param array $params
 	 * @return mixed
 	 * 	 */
-	protected function getCoordinates(array $params){
+	protected function getCoordinatesByCellInfo(array $params){
 		$apiKey = env('GOOGLE_MAPS_GEOLOCATION_APIKEY');
 		
 		$url = "https://www.googleapis.com/geolocation/v1/geolocate?key=".$apiKey;
@@ -314,6 +322,14 @@ class MicrocontrollerController extends Controller {
 		curl_close($ch);
 		
 		return $result;
+	}
+	
+	protected function getCoordinatesByIp($ipaddr){
+		$api="https://freegeoip.net/json/".$ipaddr;
+		
+		$url_info = json_decode(file_get_contents($api),true);
+		//$url_info['url'] = $url;
+		return $url_info;
 	}
 	
 	/**

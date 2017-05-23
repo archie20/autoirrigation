@@ -1,0 +1,42 @@
+APIs For Controller system
+
+1. /refresh/token/{systemId} 
+	{systemId} - this is the microcontroller ID.
+	*Required Params* => user_id - This the ID of the farmer owner of the Irrigation system.
+	*Possible Responses* => token - This is the token used to validate requests and for additional 	security that is valid for 3 days. Request to other API endpoints must have this token included. It can be refreshed by accessing this end-point again.
+	
+2. /add/sensor/{systemId}
+	{systemId} - this is the microcontroller ID.
+	This end-point registers the number of sensors assigned to the irrigation system. For every new sensor added,this url must be called to register the sensor.
+	*Required params* => user_id - This the ID of the farmer owner of the Irrigation system,
+						token - This is the token used to validate requests and for additional security that is valid for 3 days.
+	*Possible Responses* => HTTP_CODE:200, message->"added succesfully".
+							HTTP_CODE:404, message->"System cannot be found or is deleted".
+
+
+3. /log/readings/{systemId}
+	{systemId} - this is the microcontroller ID.
+	This end-point logs farm data from the irrigation system
+	*Required Params*=> token - This is the token used to 	 validate requests and for additional security that is valid for 3 days.
+						'moist'- The recorded soil moisture value,
+						'temp' - Soil or farm temperature,
+						'pump_status' - The status of the pump at the time when the reading was taken(ON or OFF),
+						'humidity' - Recorded humidity value,
+						'time_recorded' - Timestamp of when these readings were taken.(e.g 2004-11-04 08:37:45)
+	*Possible Responses*=> HTTP_CODE:201, message->"recorded succesfully".
+						   HTTP_CODE:500, message->"Server Error, Try again".
+					
+4.  /log/intrusion/{systemId}
+	{systemId} - this is the microcontroller ID.
+	In the case an intrusion was detected, this end-point allows you to report the incident to the online server.
+	*Required Params*=> token - This is the token used to  validate requests and for additional security that is valid for 3 days.
+						user_id - This the ID of the farmer owner of the Irrigation system.
+						time_recorded - Timestamp of when the intrusion was detected.(e.g 2004-11-04 08:37:45)
+	*Possible Responses* => HTTP_CODE:201, message->"reported succesfully".
+							HTTP_CODE:404, message->"System cannot be found or is deleted".
+							HTTP_CODE:400, message->"'missing time_recorded param".
+							HTTP_CODE:500, message->"Server Error, Try again".
+	
+	
+5. 	'/user'
+	This is just for fun!

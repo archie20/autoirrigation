@@ -35,7 +35,9 @@ class Farmer extends Model implements AuthenticatableContract, AuthorizableContr
 	public $timestamps = false;
 	protected $table = 'Farmer';
 	protected $primaryKey = 'id';
+	
 	public function microcontrollers() {
 		return $this->hasMany ( 'App\Microcontroller', 'Farmer_id' );
 	}
+	
 }
