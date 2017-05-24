@@ -11,7 +11,7 @@ return [
 		 * | any other location as required by the application or its packages.
 		 */
 		
-		'name' => 'Auto Irrigation Web Console',
+		'name' => 'Smart Irrigation Web Console',
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ return [
     |
     */
 
-    'env' => env ( 'APP_ENV', 'production' ),
+    'env' => env ( 'APP_ENV', 'development' ),
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
     |
     */
 
-    'debug' => env ( 'APP_DEBUG', false ),
+    'debug' => env ( 'APP_DEBUG', true ),
 
     /*
     |--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ return [
     |
     */
 
-    'url' => env('OPENSHIFT_BUILD_NAME') ? ( 'http://'.preg_replace('/^(.*)-[\d]+$/','${1}',env('OPENSHIFT_BUILD_NAME', 'siwc')).'-'.env('OPENSHIFT_BUILD_NAMESPACE').'.'.env('ROUTER_SHARD', '44fs').'.'.env('CLUSTER_NAME', 'preview').'.openshiftapps.com' ) : env('APP_URL', 'http://localhost'),
+    'url' => env('OPENSHIFT_BUILD_NAME') ? ( 'http://'.preg_replace('/^(.*)-[\d]+$/','${1}',env('OPENSHIFT_BUILD_NAME', 'app1')).'-'.env('OPENSHIFT_BUILD_NAMESPACE').'.'.env('ROUTER_SHARD', '1d35').'.'.env('CLUSTER_NAME', 'starter-us-east-1').'.openshiftapps.com' ) : env('APP_URL', 'http://localhost'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
