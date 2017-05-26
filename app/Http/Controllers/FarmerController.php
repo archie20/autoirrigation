@@ -164,7 +164,7 @@ class FarmerController extends Controller {
 		
 			$arranged_arr = array_reverse ( $moist_vals->toArray () );
 			
-			return $this->resObj(['message'=>'recorded_info',
+			return $this->resObj(['message'=>'moist_vals',
 								  'moist_vals'=>$arranged_arr ], HttpResp::HTTP_OK);
 	}
 	

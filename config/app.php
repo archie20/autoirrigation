@@ -50,7 +50,7 @@ return [
     |
     */
 
-    'url' => env('OPENSHIFT_BUILD_NAME') ? ( 'http://'.preg_replace('/^(.*)-[\d]+$/','${1}',env('OPENSHIFT_BUILD_NAME', 'app1')).'-'.env('OPENSHIFT_BUILD_NAMESPACE').'.'.env('ROUTER_SHARD', '1d35').'.'.env('CLUSTER_NAME', 'starter-us-east-1').'.openshiftapps.com' ) : env('APP_URL', 'http://localhost'),
+    'url' =>  env('APP_URL', 'http://localhost'),
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
