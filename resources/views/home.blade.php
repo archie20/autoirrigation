@@ -7,8 +7,8 @@
 	<div class="box-body">
 
 		@if(! $systems->count())
-		<li>No Registered systems added. Contact the administrator to register
-			one</li> @else
+		<li>No Registered systems added. Contact the administrator to register one</li>
+		@else
 		<table class="table table-bordered">
 			<tr>
 				<th style="width: 70px">Sys. ID</th>
@@ -21,10 +21,12 @@
 			<tr>
 				<td>{{ $system->id }}</td>
 				<td>{{ $system->plant_name }}</td>
-				<td>{{ $system->device_location }}</td> @if($system->isActivated)
+				<td>{{ $system->device_location }}</td> 
+				@if($system->isActivated)
 				<td><span class="badge bg-green">ACTIVATED</span></td>
 				<td><a href="{{  url('/dash/system/'.$system->id) }}"
-					class="btn btn-default btn-flat"> View </a></td> @else
+					class="btn btn-default btn-flat"> View </a></td> 
+				@else
 				<td><span class="badge bg-red">DEACTIVATED</span></td>
 				<td><a class="btn btn-default btn-flat" disabled> View </a></td>
 				@endif

@@ -9,7 +9,8 @@
 	<div class="box-body no-padding">
 		<table class="table table-striped">
 			@if(! $usersList)
-			<li>No users.</li> @else
+			<li>No users.</li> 
+			@else
 			<tr>
 				<th style="width: 70px">User ID</th>
 				<th>Name</th>
@@ -23,7 +24,8 @@
 				<td>{{ $user['email'] }}</td>
 				<td>{{ $user['systems_count'] }}</td>
 			</tr>
-			@endforeach @endif
+			@endforeach 
+			@endif
 		</table>
 	</div>
 	<!-- /.box-body -->

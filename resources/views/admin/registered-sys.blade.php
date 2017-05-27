@@ -8,7 +8,8 @@
 	<div class="box-body">
 		<table class="table table-bordered">
 			@if(! $systems->count())
-			<li>No soils added.</li> @else
+			<li>No soils added.</li> 
+			@else
 			<tr>
 				<th style="width: 70px">Sys. ID</th>
 				<th>Assigned Plant</th>
@@ -25,7 +26,8 @@
 				<td><span class="badge bg-red">OFF</span></td> @endif
 				<td>{{ $system->Farmer_id }}</td>
 			</tr>
-			@endforeach @endif
+			@endforeach 
+			@endif
 		</table>
 	</div>
 	<!-- /.box-body -->

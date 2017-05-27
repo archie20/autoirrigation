@@ -17,10 +17,11 @@
 
 								<div class="col-md-6">
 									<input id="name" type="text" class="form-control" name="name"
-										value="{{ old('name') }}" required autofocus> @if
-									($errors->has('name')) <span class="help-block"> <strong>{{
-											$errors->first('name') }}</strong>
-									</span> @endif
+										value="{{ old('name') }}" required autofocus> 
+										@if($errors->has('name')) 
+										<span class="help-block"> <strong>{{ $errors->first('name') }}</strong>
+									</span> 
+									@endif
 								</div>
 							</div>
 							<div class="col-md-6 col-md-offset-4">
@@ -36,11 +37,13 @@
 
 				<div class="panel-body">
 					@if (!$mControllers->count())
-					<li>No registered irrigation systems detected.</li> @else @foreach
-					($mControllers as $mController)
-					<li><a class="btn btn-link"
-						href="{{ url('/microcontroller/'.$mController->id) }}">Registered
-							system {{ $loop->index +1 }}</a></li> @endforeach @endif
+					<li>No registered irrigation systems detected.</li> 
+					@else 
+						@foreach($mControllers as $mController)
+					<li><a class="btn btn-link" 
+						href="{{ url('/microcontroller/'.$mController->id) }}">Registered system {{ $loop->index +1 }}</a></li> 
+							@endforeach 
+					@endif
 				</div>
 			</div>
 			<!-- End Microcontroller Editing -->

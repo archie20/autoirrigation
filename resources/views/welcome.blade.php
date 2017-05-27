@@ -14,7 +14,6 @@
 <!-- Styles -->
 <style>
 html, body {
-	background-image: url('/img/intro-bg.jpg');
 	background-size: cover;
 	color: #636b6f;
 	font-family: 'Raleway', sans-serif;
@@ -78,8 +77,6 @@ html, body {
 
 		<div class="content">
 			<div class="title m-b-md">Smart Irrigation Web Console</div>
-
-
 		</div>
 	</div>
 </body>

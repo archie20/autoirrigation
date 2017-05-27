@@ -57,10 +57,10 @@ echo json_encode ( [
 
 					<input id="username" name="username" type="text"
 						class="form-control" placeholder="Username" required autofocus> <span
-						class="glyphicon glyphicon-user form-control-feedback"></span> @if
-					($errors->has('username')) <span class="help-block"> <strong>{{
-							$errors->first('username') }}</strong>
-					</span> @endif
+						class="glyphicon glyphicon-user form-control-feedback"></span> 
+						@if($errors->has('username')) 
+						  <span class="help-block"> <strong>{{ $errors->first('username') }}</strong></span> 
+						@endif
 
 				</div>
 				<div
@@ -68,26 +68,24 @@ echo json_encode ( [
 
 					<input id="password" type="password" class="form-control"
 						placeholder="Password" name="password" required> <span
-						class="glyphicon glyphicon-lock form-control-feedback"></span> @if
-					($errors->has('password')) <span class="help-block"> <strong>{{
-							$errors->first('password') }}</strong>
-					</span> @endif
+						class="glyphicon glyphicon-lock form-control-feedback"></span> 
+						@if($errors->has('password')) 
+						<span class="help-block"> <strong>{{ $errors->first('password') }}</strong></span> 
+						@endif
 
 				</div>
 				<div class="row">
 
 					<!-- /.col -->
 					<div class="col-xs-4">
-						<button type="submit" class="btn btn-primary btn-block btn-flat">Log
-							In</button>
+						<button type="submit" class="btn btn-primary btn-block btn-flat">Log In</button>
 					</div>
 					<!-- /.col -->
 				</div>
 			</form>
 
 
-			<a href="{{ url('/admin_area/register') }}" class="text-center">Register
-				as an Admin</a>
+			<a href="{{ url('/admin_area/register') }}" class="text-center">Register as an Admin</a>
 
 		</div>
 		<!-- /.login-box-body -->

@@ -34,7 +34,8 @@
 										name="plantName" value="{{ $irrSystem->plant_name }}" required
 										autofocus> @if($errors->has('plant_name')) <span
 										class="help-block"> <strong>{{ $errors->first('plant_name') }}</strong>
-									</span> @endif
+									</span> 
+									@endif
 								</div>
 							</div>
 						</div>
@@ -49,9 +50,9 @@
 									<input id="deviceLocation" type="text" class="form-control"
 										name="deviceLocation" value="{{ $irrSystem->device_location }}"
 										required> @if($errors->has('device_location')) <span
-										class="help-block"> <strong>{{
-											$errors->first('device_location') }}</strong>
-									</span> @endif
+										class="help-block"> <strong>{{ $errors->first('device_location') }}</strong>
+									</span> 
+									@endif
 								</div>
 							</div>
 						</div>

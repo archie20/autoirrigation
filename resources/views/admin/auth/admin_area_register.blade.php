@@ -15,7 +15,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>{{ config('app.name', 'Auto Irrigation Web Console') }}</title>
+<title>{{ config('app.name', 'Smart Irrigation Web Console') }}</title>
 
 
 <!-- Bootstrap 3.3.6 -->
@@ -44,8 +44,7 @@ echo json_encode ( [
 
 	<div class="register-box">
 		<div class="register-logo">
-			<a href="{{ url('/') }}">{{ config('app.name', 'Auto Irrigation Web
-				Console') }} (Admin)</a>
+			<a href="{{ url('/') }}">{{ config('app.name', 'Smart Irrigation Web Console') }} (Admin)</a>
 		</div>
 
 		<div class="register-box-body">
@@ -59,9 +58,9 @@ echo json_encode ( [
 
 					<input id="username" name="username" type="text"
 						class="form-control" placeholder="Username" required autofocus> <span
-						class="glyphicon glyphicon-user form-control-feedback"></span> @if
-					($errors->has('username')) <span class="help-block"> <strong>{{
-							$errors->first('username') }}</strong>
+						class="glyphicon glyphicon-user form-control-feedback"></span> 
+						@if($errors->has('username')) 
+						<span class="help-block"> <strong>{{ $errors->first('username') }}</strong>
 					</span> @endif
 
 				</div>
@@ -70,9 +69,9 @@ echo json_encode ( [
 
 					<input id="password" type="password" class="form-control"
 						placeholder="Password" name="password" required> <span
-						class="glyphicon glyphicon-lock form-control-feedback"></span> @if
-					($errors->has('password')) <span class="help-block"> <strong>{{
-							$errors->first('password') }}</strong>
+						class="glyphicon glyphicon-lock form-control-feedback"></span> 
+						@if($errors->has('password')) 
+						<span class="help-block"> <strong>{{ $errors->first('password') }}</strong>
 					</span> @endif
 
 				</div>

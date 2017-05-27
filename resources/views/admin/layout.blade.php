@@ -11,7 +11,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>{{ config('app.name', 'Auto Irrigation Web Console') }}</title>
+<title>{{ config('app.name', 'Smart Irrigation Web Console') }}</title>
 
 <!-- Bootstrap 3.3.6 -->
 <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.min.css') }}">
@@ -95,8 +95,7 @@ desired effect
 							data-toggle="dropdown"> <!-- The user image in the navbar--> <img
 								src="{{ asset('admin/dist/img/avatar.png') }}"
 								class="user-image" alt="User Image"> <!-- hidden-xs hides the username on small devices so only the image appears. -->
-								<span class="hidden-xs">{{
-									Auth::guard('admin')->user()->username }}</span>
+								<span class="hidden-xs">{{ Auth::guard('admin')->user()->username }}</span>
 						</a>
 							<ul class="dropdown-menu">
 								<!-- The user image in the menu -->
@@ -177,7 +176,7 @@ desired effect
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					AIWC Dashboard <small>Control Panel</small>
+					SIWC Dashboard <small>Control Panel</small>
 				</h1>
 
 			</section>
@@ -209,7 +208,8 @@ desired effect
 					<button type="button" class="close" data-dismiss="alert">x</button>
 					Please check the form below for errors
 				</div>
-				@endif @yield('content')
+				@endif 
+				@yield('content')
 
 			</section>
 			<!-- /.content -->
@@ -221,8 +221,7 @@ desired effect
 			<!-- To the right -->
 			<div class="pull-right hidden-xs">AIWC</div>
 			<!-- Default to the left -->
-			<strong>Copyright &copy; 2017 <a href="#">{{ config('app.name', 'Auto
-					Irrigation Web Console') }}</a>.
+			<strong>Copyright &copy; 2017 <a href="#">{{ config('app.name', 'Smart Irrigation Web Console') }}</a>.
 			</strong> All rights reserved.
 		</footer>
 

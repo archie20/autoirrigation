@@ -15,10 +15,10 @@
 
 							<div class="col-md-6">
 								<input id="email" type="email" class="form-control" name="email"
-									value="{{ old('email') }}" required autofocus> @if
-								($errors->has('email')) <span class="help-block"> <strong>{{
-										$errors->first('email') }}</strong>
-								</span> @endif
+									value="{{ old('email') }}" required autofocus>
+									 @if($errors->has('email')) 
+									 <span class="help-block"><strong>{{ $errors->first('email') }}</strong></span> 
+									 @endif
 							</div>
 						</div>
 
@@ -28,17 +28,17 @@
 
 							<div class="col-md-6">
 								<input id="password" type="password" class="form-control"
-									name="password" required> @if ($errors->has('password')) <span
-									class="help-block"> <strong>{{ $errors->first('password') }}</strong>
-								</span> @endif
+									name="password" required> 
+									@if ($errors->has('password')) 
+									<span class="help-block"> <strong>{{ $errors->first('password') }}</strong></span> 
+									@endif
 							</div>
 						</div>
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<div class="checkbox">
-									<label> <input type="checkbox" name="remember"> Remember Me
-									</label>
+									<label> <input type="checkbox" name="remember"> Remember Me</label>
 								</div>
 							</div>
 						</div>

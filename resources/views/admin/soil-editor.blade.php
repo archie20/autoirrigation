@@ -38,7 +38,9 @@
 			</tr>
 
 			@if(! $soils->count())
-			<li>No soils added.</li> @else @foreach($soils as $soil)
+			<li>No soils added.</li> 
+			@else 
+				@foreach($soils as $soil)
 			<form action="{{ url('/admin/soils') }}" method="post">
 				{{ csrf_field() }}
 				<tr>
@@ -56,7 +58,8 @@
 					</td>
 				</tr>
 			</form>
-			@endforeach @endif
+			@endforeach 
+		@endif
 		</table>
 	</div>
 

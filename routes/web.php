@@ -28,7 +28,7 @@ Route::post ( '/microcontroller/{id}', 'MicrocontrollerController@updateIrrigati
 
 Route::get ( '/dash/system/{id}', 'MicrocontrollerController@userSystemOverview' );
 
-Route::get('/microcontroller/status/{id}','MicrocontrollerController@changeIrrigationSystemStatus');
+Route::get( '/microcontroller/status/{id}','MicrocontrollerController@changeIrrigationSystemStatus');
 
 // Admin
 Route::get ( '/admin_area/login', 'Auth\Admin\LoginController@showLoginForm' );

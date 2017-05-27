@@ -56,14 +56,15 @@ echo json_encode ( [
 
 		<header class="main-header">@include('layouts.navbar')</header>
 
-		@if(! Auth::guest()) @include('layouts.sidebar') @endif
+		@if(! Auth::guest()) 
+			@include('layouts.sidebar') 
+		@endif
 
 		<!-- Content Wrapper. Contains page content -->
 		<div class="content-wrapper">
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
-				<h1>AIWC Dashboard</h1>
-
+				<h1>SIWC Dashboard</h1>
 			</section>
 
 			<!-- Main content -->
@@ -111,8 +112,7 @@ echo json_encode ( [
 	<!-- AdminLTE App -->
 	<script src="{{ asset('admin/dist/js/app.min.js') }}"></script>
 
-	<script
-		src="{{ asset('admin/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+	<script src="{{ asset('admin/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
 	<script src="{{ asset('admin/plugins/fastclick/fastclick.js') }}"></script>
 
 </body>
