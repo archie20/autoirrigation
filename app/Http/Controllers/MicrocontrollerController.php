@@ -47,6 +47,7 @@ class MicrocontrollerController extends Controller {
 		$regFarmer->microcontrollers ()->save ( $irrSystem );
 		return redirect ()->back ()->with ( 'success', 'added a new irrigation system for ' . $request->input ( 'email' ) );
 	}
+	
 	public function updateIrrigationSystemPage(Request $request, $id) {
 		$user = Farmer::find ( Auth::guard ()->user ()->id );
 		
@@ -62,6 +63,8 @@ class MicrocontrollerController extends Controller {
 		}
 		return view ( 'edit-controller' )->with ( 'irrSystem', $irrSystem )->with ( 'soilTypes', $soilTypes );
 	}
+	
+	
 	public function updateIrrigationSystem(Request $request, $id) {
 		$user = Farmer::find ( Auth::guard ()->user ()->id );
 		
@@ -80,13 +83,34 @@ class MicrocontrollerController extends Controller {
 			$irrSystem->device_location = $request->has ( 'deviceLocation' ) ? $request->input ( 'deviceLocation' ) : $irrSystem->device_location;
 			$irrSystem->save ();
 			
-			return redirect ( 'profile' )->with ( 'success', 'Irrigation system settings changed successfully' );
+			return redirect()->back()->with ( 'success', 'Irrigation system settings changed successfully' );
 		} else {
-			// $request->session()->flash('debugMessage','microcontrollerId '.$id);
-			
 			return redirect ( 'profile' )->with ( 'error', 'Irrigation system not found or doesnt exist!' );
 		}
 	}
+	
+	public function changeIrrigationSystemStatus(Request $request,$id){
+		$user = Farmer::find ( Auth::guard ()->user ()->id );
+		
+		if (! $user) {
+			return redirect ( '/home' )->with ( 'error', 'You are not authorized to perform any action. Log in again' );
+		}
+		
+		$irrSystem = Microcontroller::find ( $id );
+		if(! $irrSystem)
+			return redirect()->back()->with ( 'error', 'Irrigation System not found, refresh the page!' );
+		
+		$status = $irrSystem->isActivated;
+		$newStatus = $status==1? 0:1;
+		$irrSystem->isActivated = $newStatus;
+		
+		if($irrSystem->save())
+			return redirect()->back()->with ( 'success', 'Irrigation System '.$id.' status changed!' );
+		else
+			return redirect()->back()->with ( 'error', 'Irrigation System '.$id.'status NOT changed!' );
+	}
+	
+	
 	public function viewAllIrrigationSystems() {
 		$admin = Admin::find ( Auth::guard ( 'admin' )->user ()->id );
 		
@@ -98,6 +122,8 @@ class MicrocontrollerController extends Controller {
 		$systems = Microcontroller::all ();
 		return view ( 'admin.registered-sys' )->with ( 'systems', $systems );
 	}
+	
+	
 	public function userSystemOverview(Request $request, $sysId) {
 		$system = Microcontroller::findOrfail ( $sysId );
 		
@@ -112,8 +138,14 @@ class MicrocontrollerController extends Controller {
 		 */
 		$rcnt_moist = Moisture_Readings::where ( 'Microcontroller_id', $system->id )->orderBy ( 'time_recorded', 'desc' )->first ();
 		
+		if (! $rcnt_moist) {
+			return redirect()->back()->with ('error', 'System '.$sysId.' has not started recording values');
+		}
+		
+		
 		$curr_weather = $rcnt_moist->weather_cond;
 		$currentTemp = $rcnt_moist->temp_reading;
+		
 		/*
 		 * Get 10 most recent moisture readings
 		 */
