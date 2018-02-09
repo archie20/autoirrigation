@@ -29,6 +29,8 @@ Route::post('/forecast/{systemId}','MicrocontrollerController@getRainPrediction'
 
 Route::get('/system/pump/{systemId}','MicrocontrollerController@checkPumpStatus')->middleware('token');
 
+Route::get('/system/pump/runtime/{systemId}','MicrocontrollerController@getPumpRuntime')->middleware('token');
+
 
 ///Mobile devices APIs
 Route::post('/user/login','FarmerController@mobileLogin');
@@ -42,3 +44,5 @@ Route::get('/user/system/{systemId}','FarmerController@getSystemDetails');
 Route::get('/user/system/recorded/{systemId}','FarmerController@systemRecordedInfo');
 
 Route::post('/user/system/pump/{systemId}','FarmerController@pumpSwitch');
+
+Route::post('/user/device/token/{id}','FarmerController@postDeviceToken');

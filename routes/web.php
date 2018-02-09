@@ -30,6 +30,12 @@ Route::get ( '/dash/system/{id}', 'MicrocontrollerController@userSystemOverview'
 
 Route::get( '/microcontroller/status/{id}','MicrocontrollerController@changeIrrigationSystemStatus');
 
+Route::get('/dash/pump/switch/{id}','MicrocontrollerController@switchPump');
+
+Route::get('/dash/moisture/all/{id}','Moisture_ReadingsController@getAllMoisture');
+Route::get('/dash/temp/all/{id}','Moisture_ReadingsController@getAllTemperature');
+Route::get('/dash/intrusions/{id}','Moisture_ReadingsController@getAllIntrusions');
+
 // Admin
 Route::get ( '/admin_area/login', 'Auth\Admin\LoginController@showLoginForm' );
 Route::post ( '/admin/login', 'Auth\Admin\LoginController@login' );
@@ -44,7 +50,10 @@ Route::get ( '/admin/regsys', 'MicrocontrollerController@viewAllIrrigationSystem
 Route::get ( '/admin/all_users', 'FarmerController@allUsers' );
 Route::get ( '/admin/add_irrigation', 'MicrocontrollerController@registerIrrigationSystemPage' );
 Route::post ( '/admin/add_irrigation', 'MicrocontrollerController@registerIrrigationSystem' );
-
+Route::get ( '/admin_area/systems', 'AdminController@systemTypeEditorPage' );
+Route::post ( '/admin/systems', 'SystemTypeController@addOrEditSystemType' );
+Route::get ( '/admin_area/plantgrp', 'AdminController@plantGrpEditorPage' );
+Route::post ( '/admin/plantgrp', 'Plant_GroupController@addOrEditPlantGrp' );
 
 
 

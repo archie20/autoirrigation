@@ -53,9 +53,41 @@ class IntrusionController extends Controller {
 		$intrusion = new Intrusion;
 		$intrusion->time_recorded = $request->input('time_recorded');
 	
-		if($irrSystem->intrusion()->save($intrusion))
+		if($irrSystem->intrusion()->save($intrusion)){
+			
+			$d_token = $farmer->device_token;
+			if($d_token){
+				$info = ['data'=>['message'=>'Irrigation System with ID = '.$irrSystem->i.' has detected an intrusion'],
+					'to'=>$farmer->device_token];
+				$this->notifyUserDevice($info);
+			}
+			
 			return $this->responseObject(['message'=>'reported successfully'], HttpResp::HTTP_CREATED);
-			else
-				return $this->responseObject(['message'=>'Server Error, Try again'], HttpResp::HTTP_INTERNAL_SERVER_ERROR);
+		}
+		else
+			return $this->responseObject(['message'=>'Server Error, Try again'], HttpResp::HTTP_INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	protected function notifyUserDevice(array $params){
+		$apiKey = env('FCM_KEY');
+	
+		$url = "https://fcm.googleapis.com/fcm/send";
+		$json=html_entity_decode(json_encode($params));
+		//echo $json;
+		$headers =  array('Content-Type: application/json','Authorization:key='.$apiKey);
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+	
+		$result = curl_exec($ch);
+		curl_close($ch);
+	
+		return $result;
 	}
 }

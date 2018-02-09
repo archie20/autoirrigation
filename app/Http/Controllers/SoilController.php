@@ -37,6 +37,7 @@ class SoilController extends Controller {
 			
 			$soil->soil_name = $request->input ( 'soil_name' );
 			$soil->threshold_value = $request->input ( 'threshold_value' );
+			$soil->MAD = $request->input('MAD');
 			
 			if ($soil->save ()) {
 				
@@ -57,13 +58,15 @@ class SoilController extends Controller {
 		}
 		
 		$this->validate ( $request, [ 
-				'threshold_value' => 'required' 
+				'threshold_value' => 'required',
+				'MAD'=>'required',
+				'soil_name'=>'required'
 		] );
 		
 		$newSoil = new Soil ();
 		$newSoil->soil_name = $request->soil_name;
 		$newSoil->threshold_value = $request->threshold_value;
-		
+		$newSoil->MAD = $request->input('MAD');
 		if ($newSoil->save ()) {
 			
 			return redirect ()->back ()->with ( 'success', 'Added ' . $newSoil->soil_name . ' succesfully' );

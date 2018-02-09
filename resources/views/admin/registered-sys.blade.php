@@ -21,9 +21,12 @@
 			<tr>
 				<td>{{ $system->id }}</td>
 				<td>{{ $system->plant_name }}</td>
-				<td>{{ $system->device_location }}</td> @if($system->isActivated)
-				<td><span class="badge bg-green">ON</span></td> @else
-				<td><span class="badge bg-red">OFF</span></td> @endif
+				<td>{{ $system->device_location }}</td> 
+				@if($system->isActivated)
+				<td><span class="badge bg-green">ON</span></td>
+				 @else
+				<td><span class="badge bg-red">OFF</span></td> 
+				@endif
 				<td>{{ $system->Farmer_id }}</td>
 			</tr>
 			@endforeach 

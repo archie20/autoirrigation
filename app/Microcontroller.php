@@ -23,4 +23,12 @@ class Microcontroller extends Model {
 	public function moisture_readings() {
 		return $this->hasMany ( 'App\Moisture_Readings', 'Microcontroller_id' );
 	}
+	
+	public function systemType() {
+		return $this->belongsTo('App\SystemType','SystemType_id');
+	}
+	
+	public function plant_group() {
+		return $this->belongsTo('App\Plant_Group','Plantgp_id');
+	}
 }

@@ -19,7 +19,7 @@
 
     for(var i=0; i<data.length; i++){
 		var myDate = new Date(data[i].time_recorded);
-    	var fDate = myDate.getDate()+"-"+myDate.getHours();
+    	var fDate = myDate.getDate()+"/"+myDate.getMonth();
         datalabels.push(fDate);
         moist_values.push(data[i].moisture_value);
         temp_values.push(data[i].temp_reading);
@@ -132,17 +132,17 @@
 
 				<p>Farm Temp</p>
 			</div>
-			<div class="icon">
-				<i class="ion ion-bag"></i>
-			</div>
-			<a href="#" class="small-box-footer">More info <i
+<!-- 			<div class="icon"> -->
+<!-- 				<i class="ion ion-bag"></i> -->
+<!-- 			</div> -->
+			<a href="{{ url('/dash/temp/all/'.$system->id) }}" class="small-box-footer">More info <i
 				class="fa fa-arrow-circle-right"></i></a>
 		</div>
 	</div>
 
 	<div class="col-lg-3 col-xs-6">
 		<!-- small box -->
-		<div class="small-box bg-aqua">
+		<div class="small-box bg-blue">
 			<div class="inner">
 				<h3>
 					{{ $rcnt_moist->moisture_value }}<sup style="font-size: 20px">%</sup>
@@ -150,30 +150,10 @@
 
 				<p>Soil Moisture</p>
 			</div>
-			<div class="icon">
-				<i class="ion ion-stats-bars"></i>
-			</div>
-			<a href="#" class="small-box-footer">More info <i
-				class="fa fa-arrow-circle-right"></i></a>
-		</div>
-	</div>
-	<!-- ./col -->
-
-	<div class="col-lg-3 col-xs-6">
-		<!-- small box -->
-		<div class="small-box bg-green">
-			<div class="inner">
-				@if($system->pump_status)
-				<h3>ON</h3>
-				@else
-				<h3>OFF</h3>
-				@endif
-				<p>Pump Status</p>
-			</div>
-			<div class="icon">
-				<i class="ion ion-stats-bars"></i>
-			</div>
-			<a href="#" class="small-box-footer">Change <i
+<!-- 			<div class="icon"> -->
+<!-- 				<i class="ion ion-stats-bars"></i> -->
+<!-- 			</div> -->
+			<a href="{{ url('/dash/moisture/all/'.$system->id) }}" class="small-box-footer">More info <i
 				class="fa fa-arrow-circle-right"></i></a>
 		</div>
 	</div>
@@ -183,14 +163,32 @@
 		<!-- small box -->
 		<div class="small-box bg-yellow">
 			<div class="inner">
-				<h3>{{ $curr_weather }}</h3>
+				@if($system->pump_status)
+				<h3>ON</h3>
+				@else
+				<h3>OFF</h3>
+				@endif
+				<p>Pump Status</p>
+			</div>
+<!-- 			<div class="icon"> -->
+<!-- 				<i class="ion ion-stats-bars"></i> -->
+<!-- 			</div> -->
+			<a href="{{ url('/dash/pump/switch/'.$system->id) }}" class="small-box-footer">Tap to Change<i 
+				class="fa fa-arrow-circle-right"></i></a>
+		</div>
+	</div>
+	<!-- ./col -->
 
-				<p>Weather Condition</p>
+	<div class="col-lg-3 col-xs-6">
+		<!-- small box -->
+		<div class="small-box bg-green">
+			<div class="inner">
+				<h3>Events</h3>
 			</div>
 			<div class="icon">
-				<i class="ion ion-stats-bars"></i>
+				
 			</div>
-			<a href="#" class="small-box-footer">More info <i
+			<a href="{{ url('/dash/intrusions/'.$system->id) }}" class="small-box-footer">More info <i
 				class="fa fa-arrow-circle-right"></i></a>
 		</div>
 	</div>

@@ -14,7 +14,10 @@
 						<td><input id="soil_name" name="soil_name" type="text"
 							class="form-control" placeholder="Soil Name" required></td>
 						<td><input id="threshold_value" name="threshold_value"
-							type="number" class="form-control" placeholder="Threshold value"
+							type="text" class="form-control" placeholder="Threshold value"
+							required></td>
+							<td><input id="MAD" name="MAD"
+							type="text" class="form-control" placeholder="MAD"
 							required></td>
 						<td>
 							<div class="col-xs-4">
@@ -49,8 +52,11 @@
 					<td><input id="soil_name" name="soil_name" type="text"
 						class="form-control" value="{{ $soil->soil_name }}"></td>
 					<td><input id="threshold_value" name="threshold_value"
-						type="number" class="form-control"
+						type="text" class="form-control"
 						value="{{ $soil->threshold_value }}"></td>
+					<td><input id="MAD" name="MAD"
+						type="text" class="form-control"
+						value="{{ $soil->MAD }}"></td>
 					<td>
 						<div class="col-xs-4">
 							<button class="btn btn-primary" type="submit">Edit</button>

@@ -112,10 +112,7 @@ class FarmerController extends Controller {
 			return $this->resObj(['message'=>'No account with this token found'], HttpResp::HTTP_UNAUTHORIZED);
 		
 		$systems = $farmer->microcontrollers()->get(['id','isActivated','plant_name','device_location','pump_status']);
-		if($systems)
 			return $this->resObj(['message'=>'user_systems','user_systems'=>$systems], HttpResp::HTTP_OK);
-		else
-			return $this->resObj(['message'=>'no user systems found'], HttpResp::HTTP_NOT_FOUND);
 			
 	}
 	
@@ -193,8 +190,29 @@ class FarmerController extends Controller {
 	}
 	
 	
+	public function postDeviceToken(Request $request,$id){
+		$passed = $this->validationPasser($request->all(), ['device_token'=>'required']);
+		if(! $passed)
+			return $this->resObj(['message'=>'device token not provided','required'=>'device_token'],
+					HttpResp::HTTP_BAD_REQUEST);
+		
+			$farmer = Farmer::find($id);
+			if(! $farmer)
+				return $this->resObj(['message'=>'No account  found'], HttpResp::HTTP_UNAUTHORIZED);
+			
+		$farmer->device_token = $request->input('device_token');
+		if($farmer->save())
+			return $this->resObj(['message'=>'Token saved'], HttpResp::HTTP_OK);
+		else
+			return $this->resObj(['message'=>'Server error'], HttpResp::HTTP_INTERNAL_SERVER_ERROR);
+		
+			
+	}
+	
+	
 	protected function validationPasser(array $inputs, array $rules){
 		$validator = $this->getValidationFactory()->make($inputs, $rules);
+		
 	
 		if($validator->fails())
 			return false;

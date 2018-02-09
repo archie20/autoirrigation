@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Admin;
 use Illuminate\Http\Response as HttpResp;
 use Illuminate\Support\Facades\Response;
+use App\SystemType;
+use App\Plant_Group;
 
 
 class MicrocontrollerController extends Controller {
@@ -58,10 +60,15 @@ class MicrocontrollerController extends Controller {
 		
 		$irrSystem = Microcontroller::find ( $id );
 		$soilTypes = Soil::all ();
+		$systemTypes = SystemType::all();
+		$plantGroups = Plant_Group::all();
 		if (! $irrSystem) {
 			return redirect ( '/not-found' );
 		}
-		return view ( 'edit-controller' )->with ( 'irrSystem', $irrSystem )->with ( 'soilTypes', $soilTypes );
+		return view ( 'edit-controller' )->with ( 'irrSystem', $irrSystem )
+										 ->with ( 'soilTypes', $soilTypes )
+										 ->with('systemTypes',$systemTypes)
+										 ->with('plantGroups',$plantGroups);
 	}
 	
 	
@@ -78,7 +85,10 @@ class MicrocontrollerController extends Controller {
 		if ($irrSystem) {
 			
 			$irrSystem->Soil_id = $request->input ( 'soils' ) ? $request->input ( 'soils' ) : $irrSystem->Soil_id;
+			$irrSystem->SystemType_id = $request->input ( 'systemType' ) ? $request->input ( 'systemType' ) : $irrSystem->SystemType_id;
+			$irrSystem->Plantgp_id = $request->input ( 'plantGroup' ) ? $request->input ( 'plantGroup' ) : $irrSystem->Plantgp_id;
 			$irrSystem->plant_name = $request->has ( 'plantName' ) ? $request->input ( 'plantName' ) : $irrSystem->plant_name;
+			$irrSystem->root_depth = $request->has ( 'rootDepth' ) ? $request->input ( 'rootDepth' ) : $irrSystem->root_depth;
 			// $irrSystem->isActivated=$request->input('activated')? $request->input('activated'):$irrSystem->isActivated;
 			$irrSystem->device_location = $request->has ( 'deviceLocation' ) ? $request->input ( 'deviceLocation' ) : $irrSystem->device_location;
 			$irrSystem->save ();
@@ -159,6 +169,28 @@ class MicrocontrollerController extends Controller {
 									 ->with ( 'moist_vals', json_encode ( $arranged_arr ) );
 	}
 	
+	public function switchPump(Request $request,$id) {
+			$user = Farmer::find ( Auth::guard ()->user ()->id );
+		
+		if (! $user) {
+			return redirect ( '/home' )->with ( 'error', 'You are not authorized to perform any action. Log in again' );
+		}
+		
+		$irrSystem = Microcontroller::find ( $id );
+		if(! $irrSystem)
+			return redirect()->back()->with ( 'error', 'Irrigation System not found, refresh the page!' );
+		
+			$status = $irrSystem->pump_status;
+			$newStatus = $status==1? 0:1;
+			$irrSystem->pump_status = $newStatus;
+			
+			if($irrSystem->save())
+				return redirect()->back()->with ( 'success', 'Irrigation System '.$id.' Pump status changed!' );
+			else
+				return redirect()->back()->with ( 'error', 'Irrigation System '.$id.' pump status NOT changed!' );
+		
+		
+	}
 	
 	
 	
@@ -243,6 +275,13 @@ class MicrocontrollerController extends Controller {
 	
 	
 	public function addSensor(Request $request,$systemId){
+		$rules = ['user_id'=>'required'];
+		$valid = $this->validationPasser($request->all(), $rules);
+		
+		if(! $valid){
+			return $this->responseObject(['message'=>'missing fields'], HttpResp::HTTP_BAD_REQUEST);
+		}
+		
 		$irrSystem = Microcontroller::with('farmer')->where('id',$systemId)
 													->where('Farmer_id',$request->input('user_id',0))
 													->where('token',$request->input('token'))
@@ -252,11 +291,19 @@ class MicrocontrollerController extends Controller {
 		}
 		
 		$irrSystem->increment('num_of_sensors');
-		return $this->responseObject(['message'=>'added successfully'], HttpResp::HTTP_OK);
+		return $this->responseObject(['message'=>'added successfully','sensors'=>$irrSystem->num_of_sensors], HttpResp::HTTP_OK);
 	}
 	
 	
 	public function checkPumpStatus(Request $request, $systemId){
+		
+		$rules = ['user_id'=>'required'];
+		$valid = $this->validationPasser($request->all(), $rules);
+		
+		if(! $valid){
+			return $this->responseObject(['message'=>'missing fields'], HttpResp::HTTP_BAD_REQUEST);
+		}
+		
 		$irrSystem = Microcontroller::with('farmer')->where('id',$systemId)
 													->where('Farmer_id',$request->input('user_id',0))
 													->where('token',$request->input('token'))
@@ -265,9 +312,64 @@ class MicrocontrollerController extends Controller {
 			return $this->responseObject(['message'=>'System not found or has been deleted'], HttpResp::HTTP_NOT_FOUND);
 		}
 		
-		return $this->responseObject(['message'=>'pump_status','pump_status'=>$irrSystem->pump_status], HttpResp::HTTP_OK);
+		return $this->responseObject(['message'=>'pump_status','pump_status'=>$irrSystem->pump_status,'MAD'=>$irrSystem->soil->MAD], 
+										HttpResp::HTTP_OK);
 	}
 	
+	
+	public function pumpSwitch(Request $request, $systemId){
+		$rules = ['user_id'=>'required','pump_status'=>'required'];
+		$valid = $this->validationPasser($request->all(), $rules);
+		
+		if(! $valid){
+			return $this->responseObject(['message'=>'missing fields'], HttpResp::HTTP_BAD_REQUEST);
+		}
+		
+		$irrSystem = Microcontroller::with('farmer')->where('id',$systemId)
+													->where('Farmer_id',$request->input('user_id',0))
+													->where('token',$request->input('token'))
+													->first();
+		if(! $irrSystem){
+			return $this->responseObject(['message'=>'System not found or has been deleted'], HttpResp::HTTP_NOT_FOUND);
+		}
+	
+		$irrSystem->pump_status = $request->input('pump_status');
+		if($irrSystem->save())
+			return $this->resObj(['message'=>'Pump status changed'], HttpResp::HTTP_OK);
+		else
+			return $this->resObj(['message'=>'Sever error'], HttpResp::HTTP_INTERNAL_SERVER_ERROR);
+	}
+	
+	
+	public function getPumpRuntime(Request $request,$systemId) {
+		$rules = ['user_id'=>'required'];
+		$valid = $this->validationPasser($request->all(), $rules);
+		
+		if(! $valid){
+			return $this->responseObject(['message'=>'missing fields'], HttpResp::HTTP_BAD_REQUEST);
+		}
+		
+		$irrSystem = Microcontroller::with('farmer')->where('id',$systemId)
+													->where('Farmer_id',$request->input('user_id',0))
+													->where('token',$request->input('token'))
+													->first();
+		if(! $irrSystem){
+			return $this->responseObject(['message'=>'System not found or has been deleted'], HttpResp::HTTP_NOT_FOUND);
+		}
+		
+		$soilType = $irrSystem->soil->threshold_value;
+		$rootDepth = $irrSystem->root_depth;
+		$prepRate = $irrSystem->systemType->p_rate;
+		$efficiency = 0.85;
+		$irrAmt = $soilType * $rootDepth * 0.5;
+		$r1 =  ($irrAmt * 60)/$prepRate;
+		$r2 =  1/(0.386 + (0.614 * $efficiency));
+		
+		$runtime_mins = $r1 * $r2;
+		
+		return $this->responseObject(['message'=>'runtime_mins','rumtime_mins'=>$runtime_mins,'MAD'=>$irrSystem->soil->MAD], HttpResp::HTTP_OK);
+		
+	}
 	
 	public function getRainPrediction(Request $request,$systemId){
 		/*$rules = [

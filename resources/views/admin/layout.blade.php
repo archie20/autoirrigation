@@ -153,6 +153,10 @@ desired effect
 					<!-- Optionally, you can add icons to the links -->
 					<li class="active"><a href="{{ url('/admin_area/soils') }}"><i
 							class="fa fa-link"></i> <span>Add/Edit Soils</span></a></li>
+					<li class="active"><a href="{{ url('/admin_area/systems') }}"><i
+							class="fa fa-link"></i> <span>System Types</span></a></li>
+					<li class="active"><a href="{{ url('/admin_area/plantgrp') }}"><i
+							class="fa fa-link"></i> <span>Plant Groups</span></a></li>
 					<li><a href="{{ url('/admin/regsys') }}"><i class="fa fa-link"></i>
 							<span>View All Registered Systems</span></a></li>
 					<li class="treeview"><a href="#"><i class="fa fa-link"></i> <span>Users</span>

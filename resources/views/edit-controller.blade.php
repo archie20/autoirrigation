@@ -22,6 +22,36 @@
 							</div>
 						</div>
 						</div>
+						
+						<div class="form-group">
+						<div>
+							<label for="systemType" class="col-md-4 control-label">System Type</label>
+							<div class="col-md-6">
+							<select class="textWidth form-control" name="systemType" id="systemType_id"
+								type="text" required>
+								<option disabled selected>--- select system type ---</option>
+								@foreach($systemTypes as $systemType)
+								<option value="{{ $systemType->id }}">{{ $systemType->type }}</option>
+								@endforeach
+							</select>
+							</div>
+						</div>
+						</div>
+						
+						<div class="form-group">
+						<div>
+							<label for="plantGroup" class="col-md-4 control-label">Plant Group (for Kc values)</label>
+							<div class="col-md-6">
+							<select class="textWidth form-control" name="plantGroup" id="plantGroup_id"
+								type="text" required>
+								<option disabled selected>--- select plant group ---</option>
+								@foreach($plantGroups as $plantGroup)
+								<option value="{{ $plantGroup->id }}">{{ $plantGroup->group_name }}</option>
+								@endforeach
+							</select>
+							</div>
+						</div>
+						</div>
 
 						<div class="form-group">
 							<div
@@ -34,6 +64,22 @@
 										name="plantName" value="{{ $irrSystem->plant_name }}" required
 										autofocus> @if($errors->has('plant_name')) <span
 										class="help-block"> <strong>{{ $errors->first('plant_name') }}</strong>
+									</span> 
+									@endif
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<div
+								class="form-group{{ $errors->has('root_depth') ? ' has-error' : '' }}">
+								<label for="rootDepth" class="col-md-4 control-label">Depth of plant roots(.in)</label>
+
+								<div class="col-md-6">
+									<input id="rootDepth" type="text" class="form-control"
+										name="rootDepth" value="{{ $irrSystem->root_depth }}" required
+										autofocus> @if($errors->has('root_depth')) <span
+										class="help-block"> <strong>{{ $errors->first('root_depth') }}</strong>
 									</span> 
 									@endif
 								</div>
